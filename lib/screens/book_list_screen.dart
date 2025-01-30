@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'book_details_screen.dart';
 import 'favorites_screen.dart';
+import '../providers/favorites_provider.dart';
 
 class BookListScreen extends StatefulWidget {
   @override
@@ -46,6 +48,8 @@ class _BookListScreenState extends State<BookListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final favoritesProvider = Provider.of<FavoritesProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -96,6 +100,8 @@ class _BookListScreenState extends State<BookListScreen> {
                 itemCount: books.length,
                 itemBuilder: (context, index) {
                   final book = books[index];
+                  final isBookmarked = favoritesProvider.isBookFavorited(book);
+
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -133,9 +139,18 @@ class _BookListScreenState extends State<BookListScreen> {
                           Positioned(
                             top: 10,
                             right: 10,
-                            child: Icon(
-                              Icons.bookmark_border,
-                              color: Colors.white,
+                            child: IconButton(
+                              icon: Icon(
+                                isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                                color: isBookmarked ? Colors.green.shade800 : Colors.white,
+                              ),
+                              onPressed: () {
+                                if (isBookmarked) {
+                                  favoritesProvider.removeFromFavorites(book);
+                                } else {
+                                  favoritesProvider.addToFavorites(book);
+                                }
+                              },
                             ),
                           ),
                         ],
@@ -164,6 +179,8 @@ class _BookListScreenState extends State<BookListScreen> {
                 itemCount: books.length,
                 itemBuilder: (context, index) {
                   final book = books[index];
+                  final isBookmarked = favoritesProvider.isBookFavorited(book);
+
                   return ListTile(
                     contentPadding: EdgeInsets.symmetric(vertical: 8),
                     leading: Container(
@@ -182,7 +199,19 @@ class _BookListScreenState extends State<BookListScreen> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(book['author']!),
-                    trailing: Icon(Icons.bookmark_border),
+                    trailing: IconButton(
+                      icon: Icon(
+                        isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                        color: isBookmarked ? Colors.green.shade800 : Colors.grey,
+                      ),
+                      onPressed: () {
+                        if (isBookmarked) {
+                          favoritesProvider.removeFromFavorites(book);
+                        } else {
+                          favoritesProvider.addToFavorites(book);
+                        }
+                      },
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,
