@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final prefs = await SharedPreferences.getInstance();
     final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
-    await Future.delayed(Duration(seconds: 2)); // Simulate loading
+    await Future.delayed(Duration(seconds: 2));
 
     Navigator.pushReplacement(
       context,

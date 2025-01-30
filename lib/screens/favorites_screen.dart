@@ -40,7 +40,6 @@ class FavoritesScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title: Bookmarks
             Text(
               'Bookmarks',
               style: TextStyle(
@@ -50,7 +49,6 @@ class FavoritesScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
 
-            // List of Favorited Books
             Expanded(
               child: ListView.builder(
                 itemCount: favoritedBooks.length,
@@ -99,7 +97,6 @@ class FavoritesScreen extends StatelessWidget {
         ),
       ),
 
-      // Floating Bottom Navigation Bar
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
         height: 60,
@@ -121,13 +118,12 @@ class FavoritesScreen extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.home, color: Colors.grey),
               onPressed: () {
-                Navigator.pop(context); // Navigate back to the home screen
+                Navigator.pop(context);
               },
             ),
             IconButton(
               icon: Icon(Icons.bookmark, color: Colors.green.shade800),
               onPressed: () {
-                // Already on the favorites screen
               },
             ),
           ],

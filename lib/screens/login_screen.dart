@@ -33,7 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Centered Logo
             Center(
               child: Container(
                 padding: EdgeInsets.all(20),
@@ -53,7 +52,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(height: 40),
 
-            // Login Title
             Text(
               'Login',
               style: TextStyle(
@@ -64,7 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(height: 20),
 
-            // Email Field
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
@@ -74,7 +71,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(height: 15),
 
-            // Password Field
             TextField(
               controller: _passwordController,
               obscureText: !_isPasswordVisible,
@@ -95,7 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(height: 30),
 
-            // Login Button
             Center(
               child: SizedBox(
                 width: double.infinity,

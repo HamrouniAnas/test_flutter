@@ -24,7 +24,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Return Button (Invisible Arrow)
               IconButton(
                 icon: Icon(Icons.arrow_back, color: Colors.transparent),
                 onPressed: () {
@@ -32,7 +31,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 },
               ),
 
-              // Book Image
               Center(
                 child: Container(
                   width: 200,
@@ -48,7 +46,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               ),
               SizedBox(height: 20),
 
-              // Author (Small in Green)
               Text(
                 widget.book['author']!,
                 style: TextStyle(
@@ -58,10 +55,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               ),
               SizedBox(height: 10),
 
-              // Title and Bookmark Button
               Row(
                 children: [
-                  // Title (Bold and Big)
                   Expanded(
                     child: Text(
                       widget.book['title']!,
@@ -73,7 +68,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   ),
                   SizedBox(width: 10),
 
-                  // Bookmark Button
                   IconButton(
                     icon: Icon(
                       isBookmarked ? Icons.bookmark : Icons.bookmark_border,
@@ -92,7 +86,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               ),
               SizedBox(height: 10),
 
-              // Subtitle
               if (widget.book['subtitle'] != null && widget.book['subtitle']!.isNotEmpty)
                 Text(
                   widget.book['subtitle']!,
@@ -103,7 +96,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 ),
               SizedBox(height: 20),
 
-              // Description
               Text(
                 widget.book['description']!,
                 style: TextStyle(
@@ -113,7 +105,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               ),
               SizedBox(height: 20),
 
-              // Year and Pages (Small)
               Row(
                 children: [
                   Text(
@@ -135,7 +126,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               ),
               SizedBox(height: 40),
 
-              // Download Button
               Center(
                 child: SizedBox(
                   width: double.infinity,

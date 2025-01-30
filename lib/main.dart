@@ -6,7 +6,7 @@ import 'providers/favorites_provider.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => FavoritesProvider(),
+      create: (context) => FavoritesProvider()..loadFavorites(),
       child: MyApp(),
     ),
   );

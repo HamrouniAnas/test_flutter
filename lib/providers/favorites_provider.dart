@@ -1,25 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoritesProvider with ChangeNotifier {
-  // List of favorited books
-  final List<Map<String, String>> _favoritedBooks = [];
+  List<Map<String, String>> _favoritedBooks = [];
 
-  // Getter for favorited books
   List<Map<String, String>> get favoritedBooks => _favoritedBooks;
 
-  // Add a book to favorites
-  void addToFavorites(Map<String, String> book) {
+  static const String _favoritesKey = 'favoritedBooks';
+
+  Future<void> loadFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
+    final favoritesJson = prefs.getStringList(_favoritesKey) ?? [];
+
+    _favoritedBooks = favoritesJson.map((json) {
+      final Map<String, dynamic> bookMap = Map<String, dynamic>.from(json as Map);
+      return Map<String, String>.from(bookMap);
+    }).toList();
+
+    notifyListeners();
+  }
+
+  Future<void> _saveFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
+    final favoritesJson = _favoritedBooks.map((book) => book.toString()).toList();
+    await prefs.setStringList(_favoritesKey, favoritesJson);
+  }
+
+  Future<void> addToFavorites(Map<String, String> book) async {
     _favoritedBooks.add(book);
-    notifyListeners(); // Notify listeners to update the UI
+    await _saveFavorites();
+    notifyListeners();
   }
 
-  // Remove a book from favorites
-  void removeFromFavorites(Map<String, String> book) {
+  Future<void> removeFromFavorites(Map<String, String> book) async {
     _favoritedBooks.remove(book);
-    notifyListeners(); // Notify listeners to update the UI
+    await _saveFavorites();
+    notifyListeners();
   }
 
-  // Check if a book is favorited
   bool isBookFavorited(Map<String, String> book) {
     return _favoritedBooks.contains(book);
   }

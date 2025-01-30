@@ -17,7 +17,7 @@ class _BookListScreenState extends State<BookListScreen> {
       'title': 'The Economics of Big Science',
       'author': 'Panagiotis',
       'description': 'Essays by Leading Scientists and Policymakers',
-      'image': 'https://via.placeholder.com/150', // Placeholder image URL
+      'image': 'https://via.placeholder.com/150',
     },
     {
       'title': 'Beginning Excel 2019',
@@ -37,7 +37,6 @@ class _BookListScreenState extends State<BookListScreen> {
     setState(() {
       _selectedIndex = index;
       if (index == 1) {
-        // Navigate to Favorites Screen
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => FavoritesScreen()),
@@ -81,7 +80,6 @@ class _BookListScreenState extends State<BookListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Highlights Section
             Text(
               'Highlights',
               style: TextStyle(
@@ -92,7 +90,6 @@ class _BookListScreenState extends State<BookListScreen> {
             ),
             SizedBox(height: 10),
 
-            // Featured Books (Horizontally Scrollable Cards)
             Container(
               height: 200,
               child: ListView.builder(
@@ -162,7 +159,6 @@ class _BookListScreenState extends State<BookListScreen> {
             ),
             SizedBox(height: 20),
 
-            // Books List Section
             Text(
               'Books',
               style: TextStyle(
@@ -173,7 +169,6 @@ class _BookListScreenState extends State<BookListScreen> {
             ),
             SizedBox(height: 10),
 
-            // Book List
             Expanded(
               child: ListView.builder(
                 itemCount: books.length,
@@ -228,7 +223,6 @@ class _BookListScreenState extends State<BookListScreen> {
         ),
       ),
 
-      // Floating Bottom Navigation Bar
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
         height: 60,
