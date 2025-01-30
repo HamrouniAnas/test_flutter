@@ -1,53 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'book_details_screen.dart';
-import 'favorites_screen.dart';
 import '../providers/favorites_provider.dart';
 
-class BookListScreen extends StatefulWidget {
-  @override
-  _BookListScreenState createState() => _BookListScreenState();
-}
-
-class _BookListScreenState extends State<BookListScreen> {
-  int _selectedIndex = 0;
-
-  final List<Map<String, String>> books = [
-    {
-      'title': 'The Economics of Big Science',
-      'author': 'Panagiotis',
-      'description': 'Essays by Leading Scientists and Policymakers',
-      'image': 'https://via.placeholder.com/150',
-    },
-    {
-      'title': 'Beginning Excel 2019',
-      'author': 'Norene Brown',
-      'description': 'A Beginner\'s Guide to Excel',
-      'image': 'https://via.placeholder.com/150',
-    },
-    {
-      'title': 'Building Democracy for All',
-      'author': 'Robert W. Maloy, Torrey Trust',
-      'description': 'A Guide to Political Life',
-      'image': 'https://via.placeholder.com/150',
-    },
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 1) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => FavoritesScreen()),
-        );
-      }
-    });
-  }
-
+class BookListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
+
+    final List<Map<String, String>> books = [
+      {
+        'title': 'The Economics of Big Science',
+        'author': 'Panagiotis',
+        'description': 'Essays by Leading Scientists and Policymakers',
+        'image': 'https://via.placeholder.com/150',
+      },
+      {
+        'title': 'Beginning Excel 2019',
+        'author': 'Norene Brown',
+        'description': 'A Beginner\'s Guide to Excel',
+        'image': 'https://via.placeholder.com/150',
+      },
+      {
+        'title': 'Building Democracy for All',
+        'author': 'Robert W. Maloy, Torrey Trust',
+        'description': 'A Guide to Political Life',
+        'image': 'https://via.placeholder.com/150',
+      },
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -218,37 +198,6 @@ class _BookListScreenState extends State<BookListScreen> {
                   );
                 },
               ),
-            ),
-          ],
-        ),
-      ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
-        height: 60,
-        width: 150,
-        margin: EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10,
-              offset: Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: Icon(Icons.home, color: _selectedIndex == 0 ? Colors.green : Colors.grey),
-              onPressed: () => _onItemTapped(0),
-            ),
-            IconButton(
-              icon: Icon(Icons.bookmark, color: _selectedIndex == 1 ? Colors.green : Colors.grey),
-              onPressed: () => _onItemTapped(1),
             ),
           ],
         ),

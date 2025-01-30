@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'book_list_screen.dart'; // Replace with your home screen
-
+import 'package:test_flutter/screens/main_screen.dart';
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -20,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => BookListScreen()),
+      MaterialPageRoute(builder: (context) => MainScreen()),
     );
   }
 
