@@ -36,10 +36,10 @@ class _BookListScreenState extends State<BookListScreen> {
       _selectedIndex = index;
       if (index == 1) {
         // Navigate to Favorites Screen
-        /*Navigator.push(
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => FavoritesScreen()),
-        );*/
+        );
       }
     });
   }
@@ -98,12 +98,12 @@ class _BookListScreenState extends State<BookListScreen> {
                   final book = books[index];
                   return GestureDetector(
                     onTap: () {
-                      /*Navigator.push(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => BookDetailsScreen(book: book),
                         ),
-                      );*/
+                      );
                     },
                     child: Container(
                       width: 150,
@@ -184,12 +184,12 @@ class _BookListScreenState extends State<BookListScreen> {
                     subtitle: Text(book['author']!),
                     trailing: Icon(Icons.bookmark_border),
                     onTap: () {
-                      /*Navigator.push(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => BookDetailsScreen(book: book),
                         ),
-                      );*/
+                      );
                     },
                   );
                 },

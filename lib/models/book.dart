@@ -5,6 +5,10 @@ class Book {
   final String image;
   final String description;
   final String url;
+  final String subtitle;
+  final String download;
+  final String pages;
+  final String year;
 
   Book({
     required this.id,
@@ -13,6 +17,10 @@ class Book {
     required this.image,
     required this.description,
     required this.url,
+    required this.subtitle,
+    required this.download,
+    required this.pages,
+    required this.year,
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
@@ -23,6 +31,10 @@ class Book {
       image: json['image'],
       description: json['description'] ?? 'No description available',
       url: json['url'],
+      subtitle: json['subtitle'],
+      download: json['download'],
+      pages: json['pages'],
+      year: json['year'],
     );
   }
 }
