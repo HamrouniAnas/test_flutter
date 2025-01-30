@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/favorites_provider.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   final Map<String, String> book;
@@ -10,17 +12,11 @@ class BookDetailsScreen extends StatefulWidget {
 }
 
 class _BookDetailsScreenState extends State<BookDetailsScreen> {
-  bool _isBookmarked = false; // State to track bookmark status
-
-  void _toggleBookmark() {
-    setState(() {
-      _isBookmarked = !_isBookmarked;
-    });
-    // Add logic to save/remove the book from favorites
-  }
-
   @override
   Widget build(BuildContext context) {
+    final favoritesProvider = Provider.of<FavoritesProvider>(context);
+    final isBookmarked = favoritesProvider.isBookFavorited(widget.book);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -80,11 +76,17 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   // Bookmark Button
                   IconButton(
                     icon: Icon(
-                      _isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                      color: _isBookmarked ? Colors.green.shade800 : Colors.grey,
+                      isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                      color: isBookmarked ? Colors.green.shade800 : Colors.grey,
                       size: 30,
                     ),
-                    onPressed: _toggleBookmark,
+                    onPressed: () {
+                      if (isBookmarked) {
+                        favoritesProvider.removeFromFavorites(widget.book);
+                      } else {
+                        favoritesProvider.addToFavorites(widget.book);
+                      }
+                    },
                   ),
                 ],
               ),

@@ -1,36 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/favorites_provider.dart';
 import 'book_details_screen.dart';
 
-class FavoritesScreen extends StatefulWidget {
-  @override
-  _FavoritesScreenState createState() => _FavoritesScreenState();
-}
-
-class _FavoritesScreenState extends State<FavoritesScreen> {
-  // Mock list of favorited books
-  final List<Map<String, String>> favoritedBooks = [
-    {
-      'title': 'The Economics of Big Science',
-      'author': 'Panagiotis',
-      'description': 'Essays by Leading Scientists and Policymakers',
-      'image': 'https://via.placeholder.com/150',
-    },
-    {
-      'title': 'Beginning Excel 2019',
-      'author': 'Norene Brown',
-      'description': 'A Beginner\'s Guide to Excel',
-      'image': 'https://via.placeholder.com/150',
-    },
-  ];
-
-  void _removeFromFavorites(int index) {
-    setState(() {
-      favoritedBooks.removeAt(index);
-    });
-  }
-
+class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final favoritesProvider = Provider.of<FavoritesProvider>(context);
+    final favoritedBooks = favoritesProvider.favoritedBooks;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -101,7 +79,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         Icons.bookmark,
                         color: Colors.green.shade800,
                       ),
-                      onPressed: () => _removeFromFavorites(index),
+                      onPressed: () {
+                        favoritesProvider.removeFromFavorites(book);
+                      },
                     ),
                     onTap: () {
                       Navigator.push(
@@ -123,7 +103,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
         height: 60,
-        width: 150,
         margin: EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
           color: Colors.white,
