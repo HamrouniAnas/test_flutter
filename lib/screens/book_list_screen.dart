@@ -15,25 +15,32 @@ class _BookListScreenState extends State<BookListScreen> {
       'title': 'The Economics of Big Science',
       'author': 'Panagiotis',
       'description': 'Essays by Leading Scientists and Policymakers',
-      'image': '', // Add a URL or use a placeholder widget
+      'image': 'https://via.placeholder.com/150', // Placeholder image URL
     },
     {
       'title': 'Beginning Excel 2019',
-      'author': 'Noreen Brown',
-      'description': '',
-      'image': '',
+      'author': 'Norene Brown',
+      'description': 'A Beginner\'s Guide to Excel',
+      'image': 'https://via.placeholder.com/150',
     },
     {
       'title': 'Building Democracy for All',
       'author': 'Robert W. Maloy, Torrey Trust',
       'description': 'A Guide to Political Life',
-      'image': '',
+      'image': 'https://via.placeholder.com/150',
     },
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      if (index == 1) {
+        // Navigate to Favorites Screen
+        /*Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FavoritesScreen()),
+        );*/
+      }
     });
   }
 
@@ -70,6 +77,7 @@ class _BookListScreenState extends State<BookListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Highlights Section
             Text(
               'Highlights',
               style: TextStyle(
@@ -80,53 +88,66 @@ class _BookListScreenState extends State<BookListScreen> {
             ),
             SizedBox(height: 10),
 
-            // Featured Book Section
+            // Featured Books (Horizontally Scrollable Cards)
             Container(
               height: 200,
-              decoration: BoxDecoration(
-                color: Colors.green.shade100,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    bottom: 10,
-                    left: 10,
-                    child: Text(
-                      'Beginning Excel 2019',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 10,
-                    left: 10,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: books.length,
+                itemBuilder: (context, index) {
+                  final book = books[index];
+                  return GestureDetector(
+                    onTap: () {
+                      /*Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookDetailsScreen(book: book),
+                        ),
+                      );*/
+                    },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      width: 150,
+                      margin: EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.green.shade100,
+                        borderRadius: BorderRadius.circular(15),
+                        image: DecorationImage(
+                          image: NetworkImage(book['image']!),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      child: Text(
-                        'Douglas Adams',
-                        style: TextStyle(color: Colors.white),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            bottom: 10,
+                            left: 10,
+                            child: Text(
+                              book['title']!,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: Icon(
+                              Icons.bookmark_border,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  Positioned(
-                    top: 10,
-                    right: 10,
-                    child: Icon(Icons.bookmark_border, color: Colors.black),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
             SizedBox(height: 20),
 
-            // Books Section
+            // Books List Section
             Text(
               'Books',
               style: TextStyle(
@@ -149,17 +170,10 @@ class _BookListScreenState extends State<BookListScreen> {
                       width: 50,
                       height: 70,
                       decoration: BoxDecoration(
-                        color: Colors.green.shade100,
                         borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Text(
-                          book['title']!.split(' ')[0], // Show first word
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        image: DecorationImage(
+                          image: NetworkImage(book['image']!),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -184,22 +198,37 @@ class _BookListScreenState extends State<BookListScreen> {
           ],
         ),
       ),
-      
-      // Bottom Navigation Bar
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Accueil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: 'Favoris',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green,
-        onTap: _onItemTapped,
+
+      // Floating Bottom Navigation Bar
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        height: 60,
+        width: 150,
+        margin: EdgeInsets.only(bottom: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 10,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: Icon(Icons.home, color: _selectedIndex == 0 ? Colors.green : Colors.grey),
+              onPressed: () => _onItemTapped(0),
+            ),
+            IconButton(
+              icon: Icon(Icons.bookmark, color: _selectedIndex == 1 ? Colors.green : Colors.grey),
+              onPressed: () => _onItemTapped(1),
+            ),
+          ],
+        ),
       ),
     );
   }
