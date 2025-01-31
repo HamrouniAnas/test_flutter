@@ -26,31 +26,6 @@ class _BookListScreenState extends State<BookListScreen> {
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.green.shade800,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Text(
-                'DEV',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            Spacer(),
-            Icon(Icons.menu, color: Colors.black),
-          ],
-        ),
-      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: FutureBuilder<List<Book>>(
@@ -78,7 +53,7 @@ class _BookListScreenState extends State<BookListScreen> {
                   SizedBox(height: 10),
 
                   Container(
-                    height: 200,
+                    height: 250,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: books.length,
@@ -96,7 +71,7 @@ class _BookListScreenState extends State<BookListScreen> {
                             );
                           },
                           child: Container(
-                            width: 150,
+                            width: 300,
                             margin: EdgeInsets.only(right: 10),
                             decoration: BoxDecoration(
                               color: Colors.green.shade100,
@@ -111,30 +86,25 @@ class _BookListScreenState extends State<BookListScreen> {
                                 Positioned(
                                   bottom: 10,
                                   left: 10,
-                                  child: Text(
-                                    book.title,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 10,
-                                  right: 10,
-                                  child: IconButton(
-                                    icon: Icon(
-                                      isFavorite ? Icons.bookmark : Icons.bookmark_border,
-                                      color: isFavorite ? Colors.green.shade800 : Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      if (isFavorite) {
-                                        favoritesProvider.removeFromFavorites(book);
-                                      } else {
-                                        favoritesProvider.addToFavorites(book);
-                                      }
-                                    },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        book.title,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        book.authors,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.white70,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -163,45 +133,59 @@ class _BookListScreenState extends State<BookListScreen> {
                         final book = books[index];
                         final isFavorite = favoritesProvider.isFavorite(book);
 
-                        return ListTile(
-                          contentPadding: EdgeInsets.symmetric(vertical: 8),
-                          leading: Container(
-                            width: 50,
-                            height: 70,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              image: DecorationImage(
-                                image: NetworkImage(book.image),
-                                fit: BoxFit.cover,
+                        return Stack(
+                          children: [
+                            ListTile(
+                              contentPadding: EdgeInsets.symmetric(vertical: 8),
+                              leading: Container(
+                                width: 80,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                    image: NetworkImage(book.image),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                book.title,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(book.authors),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailsScreen(book: book),
+                                  ),
+                                );
+                              },
+                            ),
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.black.withOpacity(0.6),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(
+                                    isFavorite ? Icons.bookmark : Icons.bookmark_border,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    if (isFavorite) {
+                                      favoritesProvider.removeFromFavorites(book);
+                                    } else {
+                                      favoritesProvider.addToFavorites(book);
+                                    }
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                          title: Text(
-                            book.title,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(book.authors),
-                          trailing: IconButton(
-                            icon: Icon(
-                              isFavorite ? Icons.bookmark : Icons.bookmark_border,
-                              color: isFavorite ? Colors.green.shade800 : Colors.grey,
-                            ),
-                            onPressed: () {
-                              if (isFavorite) {
-                                favoritesProvider.removeFromFavorites(book);
-                              } else {
-                                favoritesProvider.addToFavorites(book);
-                              }
-                            },
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BookDetailsScreen(book: book),
-                              ),
-                            );
-                          },
+                          ],
                         );
                       },
                     ),

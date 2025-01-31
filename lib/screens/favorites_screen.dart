@@ -11,7 +11,13 @@ class FavoritesScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favorites'),
+        title: Text('Bookmarks',
+          style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+          ),
+        ),
       ),
       body: favoriteBooks.isEmpty
           ? Center(

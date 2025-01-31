@@ -10,7 +10,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  // List of screens to display
   final List<Widget> _screens = [
     BookListScreen(),
     FavoritesScreen(),
@@ -25,6 +24,31 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.green.shade800,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(
+                'DEV',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Spacer(),
+            Icon(Icons.menu, color: Colors.black),
+          ],
+        ),
+      ),
       body: _screens[_selectedIndex],
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
