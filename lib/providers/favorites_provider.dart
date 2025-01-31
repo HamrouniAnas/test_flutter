@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'dart:convert';
+import '../models/book.dart';
 class FavoritesProvider with ChangeNotifier {
-  List<Map<String, String>> _favoritedBooks = [];
+  List<Book> _favoriteBooks = [];
+  static const String _favoritesKey = 'favoriteBooks';
 
-  List<Map<String, String>> get favoritedBooks => _favoritedBooks;
-
-  static const String _favoritesKey = 'favoritedBooks';
+  List<Book> get favoriteBooks => _favoriteBooks;
 
   Future<void> loadFavorites() async {
     final prefs = await SharedPreferences.getInstance();
     final favoritesJson = prefs.getStringList(_favoritesKey) ?? [];
 
-    _favoritedBooks = favoritesJson.map((json) {
-      final Map<String, dynamic> bookMap = Map<String, dynamic>.from(json as Map);
-      return Map<String, String>.from(bookMap);
+    _favoriteBooks = favoritesJson.map((json) {
+      final bookMap = jsonDecode(json);
+      return Book.fromJson(bookMap);
     }).toList();
 
     notifyListeners();
@@ -22,23 +22,25 @@ class FavoritesProvider with ChangeNotifier {
 
   Future<void> _saveFavorites() async {
     final prefs = await SharedPreferences.getInstance();
-    final favoritesJson = _favoritedBooks.map((book) => book.toString()).toList();
+    final favoritesJson = _favoriteBooks.map((book) => jsonEncode(book.toJson())).toList();
     await prefs.setStringList(_favoritesKey, favoritesJson);
   }
 
-  Future<void> addToFavorites(Map<String, String> book) async {
-    _favoritedBooks.add(book);
-    await _saveFavorites();
-    notifyListeners();
+  void addToFavorites(Book book) {
+    if (!_favoriteBooks.any((b) => b.id == book.id)) {
+      _favoriteBooks.add(book);
+      notifyListeners();
+      _saveFavorites();
+    }
   }
 
-  Future<void> removeFromFavorites(Map<String, String> book) async {
-    _favoritedBooks.remove(book);
-    await _saveFavorites();
+  void removeFromFavorites(Book book) {
+    _favoriteBooks.removeWhere((b) => b.id == book.id);
     notifyListeners();
+    _saveFavorites();
   }
 
-  bool isBookFavorited(Map<String, String> book) {
-    return _favoritedBooks.contains(book);
+  bool isFavorite(Book book) {
+    return _favoriteBooks.any((b) => b.id == book.id);
   }
 }

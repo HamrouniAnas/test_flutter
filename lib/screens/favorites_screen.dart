@@ -7,95 +7,57 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
-    final favoritedBooks = favoritesProvider.favoritedBooks;
+    final favoriteBooks = favoritesProvider.favoriteBooks;
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.green.shade800,
-                borderRadius: BorderRadius.circular(5),
-              ),
+        title: Text('Favorites'),
+      ),
+      body: favoriteBooks.isEmpty
+          ? Center(
               child: Text(
-                'DEV',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                'No favorites yet!',
+                style: TextStyle(fontSize: 18, color: Colors.grey),
               ),
-            ),
-            Spacer(),
-            Icon(Icons.menu, color: Colors.black),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Bookmarks',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 20),
-
-            Expanded(
-              child: ListView.builder(
-                itemCount: favoritedBooks.length,
-                itemBuilder: (context, index) {
-                  final book = favoritedBooks[index];
-                  return ListTile(
-                    contentPadding: EdgeInsets.symmetric(vertical: 8),
-                    leading: Container(
-                      width: 50,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        image: DecorationImage(
-                          image: NetworkImage(book['image']!),
-                          fit: BoxFit.cover,
-                        ),
+            )
+          : ListView.builder(
+              itemCount: favoriteBooks.length,
+              itemBuilder: (context, index) {
+                final book = favoriteBooks[index];
+                return ListTile(
+                  leading: Container(
+                    width: 50,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                        image: NetworkImage(book.image),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    title: Text(
-                      book['title']!,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  title: Text(book.title),
+                  subtitle: Text(book.authors),
+                  trailing: IconButton(
+                    icon: Icon(
+                      Icons.bookmark,
+                      color: Colors.green.shade800,
                     ),
-                    subtitle: Text(book['author']!),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.bookmark,
-                        color: Colors.green.shade800,
-                      ),
-                      onPressed: () {
-                        favoritesProvider.removeFromFavorites(book);
-                      },
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BookDetailsScreen(book: book),
-                        ),
-                      );
+                    onPressed: () {
+                      favoritesProvider.removeFromFavorites(book);
                     },
-                  );
-                },
-              ),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BookDetailsScreen(book: book),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-          ],
-        ),
-      ),
     );
   }
 }

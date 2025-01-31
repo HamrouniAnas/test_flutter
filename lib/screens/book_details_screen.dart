@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/book.dart';
 import '../providers/favorites_provider.dart';
 
-class BookDetailsScreen extends StatefulWidget {
-  final Map<String, String> book;
+class BookDetailsScreen extends StatelessWidget {
+  final Book book;
 
   BookDetailsScreen({required this.book});
 
   @override
-  _BookDetailsScreenState createState() => _BookDetailsScreenState();
-}
-
-class _BookDetailsScreenState extends State<BookDetailsScreen> {
-  @override
   Widget build(BuildContext context) {
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
-    final isBookmarked = favoritesProvider.isBookFavorited(widget.book);
+    final isFavorite = favoritesProvider.isFavorite(book);
 
     return Scaffold(
       body: SafeArea(
@@ -38,7 +34,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
-                      image: NetworkImage(widget.book['image']!),
+                      image: NetworkImage(book.image),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -47,7 +43,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               SizedBox(height: 20),
 
               Text(
-                widget.book['author']!,
+                book.authors,
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.green.shade800,
@@ -59,26 +55,23 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      widget.book['title']!,
+                      book.title,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
-
                   IconButton(
                     icon: Icon(
-                      isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                      color: isBookmarked ? Colors.green.shade800 : Colors.grey,
-                      size: 30,
+                      isFavorite ? Icons.bookmark : Icons.bookmark_border,
+                      color: isFavorite ? Colors.green.shade800 : Colors.grey,
                     ),
                     onPressed: () {
-                      if (isBookmarked) {
-                        favoritesProvider.removeFromFavorites(widget.book);
+                      if (isFavorite) {
+                        favoritesProvider.removeFromFavorites(book);
                       } else {
-                        favoritesProvider.addToFavorites(widget.book);
+                        favoritesProvider.addToFavorites(book);
                       }
                     },
                   ),
@@ -86,9 +79,9 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               ),
               SizedBox(height: 10),
 
-              if (widget.book['subtitle'] != null && widget.book['subtitle']!.isNotEmpty)
+              if (book.subtitle != null && book.subtitle!.isNotEmpty)
                 Text(
-                  widget.book['subtitle']!,
+                  book.subtitle!,
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey.shade600,
@@ -97,7 +90,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               SizedBox(height: 20),
 
               Text(
-                widget.book['description']!,
+                book.description ?? 'No description available',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black87,
@@ -108,7 +101,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               Row(
                 children: [
                   Text(
-                    'Year: ${widget.book['year'] ?? 'N/A'}',
+                    'Year: ${book.year ?? 'N/A'}',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey.shade600,
@@ -116,7 +109,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   ),
                   SizedBox(width: 20),
                   Text(
-                    'Pages: ${widget.book['pages'] ?? 'N/A'}',
+                    'Pages: ${book.pages ?? 'N/A'}',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey.shade600,
