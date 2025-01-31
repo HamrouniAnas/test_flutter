@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'book_list_screen.dart';
 import 'favorites_screen.dart';
+import 'login_screen.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -19,6 +21,15 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void _logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
   }
 
   @override
@@ -45,7 +56,20 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             Spacer(),
-            Icon(Icons.menu, color: Colors.black),
+            PopupMenuButton<String>(
+              icon: Icon(Icons.menu, color: Colors.black),
+              onSelected: (value) {
+                if (value == 'logout') {
+                  _logout(context);
+                }
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'logout',
+                  child: Text('Logout'),
+                ),
+              ],
+            ),
           ],
         ),
       ),
